@@ -20,5 +20,16 @@ namespace Api.Controller
             var result = await _authService.Register(dto);
             return Ok(new { message = result });
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto) { 
+            var result = await _authService.Login(dto);
+
+            if (result == "Login successfull!") {
+                return Ok(new { message = result });
+            }
+
+            return BadRequest(new {message = result });
+        }
     }
 }

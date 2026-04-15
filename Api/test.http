@@ -1,8 +1,3 @@
-POST https://localhost:7121/api/auth/register
-Content-Type: application/json
 
-{
-  "username": "SoloDev",
-  "email": "test@example.com",
-  "password": "password123"
-}
+GET https://localhost:7121/api/test/secret
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5ODcwNGMxNi01M2MwLTRhZWQtODdiMy1hYjE5ZDZjNmQ0MjEiLCJ1bmlxdWVfbmFtZSI6IlNvbG9EZXZfU2VjdXJlIiwibmJmIjoxNzc2MjY2MTgyLCJleHAiOjE3NzY4NzA5ODIsImlhdCI6MTc3NjI2NjE4MiwiaXNzIjoiTXlGaW5hbmNlQXBpIiwiYXVkIjoiTXlGaW5hbmNlVXNlcnMifQ.m8Hs_34V24uw2ne_s5Jthp6M2lUSjsVO5AP58BRdvFo
