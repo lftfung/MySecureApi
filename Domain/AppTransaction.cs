@@ -6,12 +6,13 @@ namespace Domain
 {
     public  class AppTransaction
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Category { get; set; } = string.Empty;
         public decimal Amount { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string Description { get; set; } = string.Empty;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public Guid UserId { get; set; }
-        public User user { get; set; }
+        public virtual User user { get; set; } = null;
     }
 }
