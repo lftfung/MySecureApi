@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using Application.DTOs;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -42,17 +43,38 @@ namespace Api.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDetail(Guid id) { 
+        public async Task<IActionResult> GetDetail(Guid id) {
             var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var transaction = await _transactionService.GetById(id, userId);
 
             if (transaction == null) {
                 return NotFound("Not Found Data");
 
-               
+
             }
 
             return Ok(transaction);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id) {
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var success = await _transactionService.Delete(id, userId);
+
+            if (!success) return NotFound("Not found transaction or no right to delete");
+
+            return Ok(new { message = "Delete success" });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, UpdateTransactionDto dto) {
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var success = await _transactionService.Update(id, userId, dto);
+
+            if (!success) return NotFound("Update failed, not found or no right");
+
+            return Ok(new { message = "Update success" });
+        
         }
 
     }

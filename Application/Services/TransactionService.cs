@@ -40,10 +40,60 @@ namespace Application.Services
                     .ToListAsync();
         }
 
-        public async Task<AppTransaction?> GetById(Guid id, Guid userid) { 
-            return await _context.Transactions
+        public async Task<TransactionResponseDto?> GetById(Guid id, Guid userid) { 
+            var t = await _context.Transactions
                 .Include(t => t.user)
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userid);
-        } 
+
+            if (t == null)
+            {
+                return null;
+            }
+
+            return new TransactionResponseDto
+            {
+                Id = t.Id,
+                Amount = t.Amount,
+                Category = t.Category,
+                Description = t.Description,
+                Date = t.Date,
+                UserName = t.user?.Name ?? "Unknown"
+
+            };
+        }
+
+        public async Task<bool> Delete(Guid id, Guid userid) {
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userid);
+
+            if (transaction == null) {
+                return false;
+
+            }
+
+            _context.Transactions.Remove(transaction);
+            await _context.SaveChangesAsync();
+            return true;
+        
+        }
+
+        public async Task<bool> Update(Guid id, Guid userid, UpdateTransactionDto dto) { 
+            var trans = await _context.Transactions
+                .FirstOrDefaultAsync(t=> t.Id == id && t.UserId == userid);
+
+            if (trans == null)
+            {
+                return false;
+            }
+            
+            trans.Amount = dto.Amount;
+            trans.Category = dto.Category;
+            trans.Description = dto.Description;
+            trans .Date = dto.Date; 
+
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
     }
 }

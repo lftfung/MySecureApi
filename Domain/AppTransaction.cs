@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public  class AppTransaction
+    public class AppTransaction
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Category { get; set; } = string.Empty;

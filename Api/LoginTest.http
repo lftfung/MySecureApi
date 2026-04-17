@@ -3,6 +3,6 @@ POST https://localhost:7121/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "test2@example.com",
+    "email": "test@example.com",
     "password": "password123"
 }
