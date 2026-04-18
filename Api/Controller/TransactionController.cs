@@ -77,10 +77,5 @@ namespace Api.Controller
         
         }
 
-        [HttpGet("error-test")]
-        public IActionResult TestError()
-        {
-            throw new Exception("error");
-        }
     }
 }
