@@ -1,5 +1,6 @@
 PUT https://localhost:7121/api/transaction/c86ada49-0daf-4e81-ba39-3ed1108a2e2b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwZmJlMTFmNi0yMDY2LTQ1NzMtYWI0OC0zMzI4OTI0NWEwN2YiLCJ1bmlxdWVfbmFtZSI6InRlc3RlcjEiLCJuYmYiOjE3NzY0MTE2ODQsImV4cCI6MTc3NzAxNjQ4NCwiaWF0IjoxNzc2NDExNjg0LCJpc3MiOiJNeUZpbmFuY2VBcGkiLCJhdWQiOiJNeUZpbmFuY2VVc2VycyJ9.Rp39aePAOdSpH1_WEGeDeEu7y3FqIAtfpJpweKLUzPo
+Content-Type: application/json
 
 {
   "amount": 25,
