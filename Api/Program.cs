@@ -41,11 +41,16 @@ builder.Services.AddScoped<TransactionService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+
 app.UseAuthentication(); 
 app.UseAuthorization();  
 
-app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
