@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Application.DTOs;
 using Application.Services;
+using Application.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,13 @@ namespace Api.Controller
         [HttpPost]
         public async Task<IActionResult> Create(CreateTransactionDto dto)
         {
+            var validator = new CreateTransactionValidator();
+            var validationResult = await validator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid) { 
+                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+            }
+
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(userIdString)) {
@@ -68,6 +76,21 @@ namespace Api.Controller
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateTransactionDto dto) {
+
+            var validator = new CreateTransactionValidator();
+
+            var validationResult = await validator.ValidateAsync(new CreateTransactionDto
+            {
+                Amount = dto.Amount,
+                Category = dto.Category,
+                Date = dto.Date,
+                Description = dto.Description,
+            });
+
+            if (!validationResult.IsValid) {
+                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+            }
+
             var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var success = await _transactionService.Update(id, userId, dto);
 

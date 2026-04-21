@@ -1,18 +1,21 @@
+using Api.Middleware;
 using Application.Services;
+using Application.Validators;
+using FluentValidation;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
-using Api.Middleware;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddControllers();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionValidator>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
