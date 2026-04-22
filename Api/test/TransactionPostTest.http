@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0MzM2Mjk0MC1iYWY4LTRmM2YtYTQyZi03ZjgxZGIyMGNmNjciLCJ1bmlxdWVfbmFtZSI6InRlc3RlcjMiLCJuYmYiOjE3NzYzNDk1NjQsImV4cCI6MTc3Njk1NDM2NCwiaWF0IjoxNzc2MzQ5NTY0LCJpc3MiOiJNeUZpbmFuY2VBcGkiLCJhdWQiOiJNeUZpbmFuY2VVc2VycyJ9._7nxB18T9pS_WLklBPlk50vGfmrbbTLLtehDWLSL7iM
 
 {
-  "amount": 25,
-  "category": "lunch",
+  "amount": -10,
+  "category": "",
   "description": "lunch set-B",
-  "date": "2026-04-16T12:00:00Z"
+  "date": "2026-04-30T12:00:00Z"
 }

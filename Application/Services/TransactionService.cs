@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Domain;
+using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,9 +13,11 @@ namespace Application.Services
 {
     public class TransactionService
     {
-        private readonly AppDbContext _context;
-        public TransactionService(AppDbContext context) { 
-            _context = context;
+        private readonly ITransactionRepository _repo;
+
+        public TransactionService(ITransactionRepository repo) {
+
+            _repo = repo;
         }
 
         public async Task<AppTransaction> Create(CreateTransactionDto dto, Guid userId) {
@@ -27,27 +30,22 @@ namespace Application.Services
                 UserId = userId
             };
 
-            _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
+            await _repo.AddAsync(transaction);
+            await _repo.SaveChangesAsync();
             return transaction;
         
         }
 
-        public async Task<List<AppTransaction>> GetAllByUserId(Guid userid) {
-            return await _context.Transactions
-                    .Where(t => t.UserId == userid)
-                    .OrderByDescending(t => t.Date)
-                    .ToListAsync();
+        public async Task<List<AppTransaction>> GetAllByUserId(Guid userid) { 
+            return await _repo.GetByUserIdAsync(userid);
+
         }
 
         public async Task<TransactionResponseDto?> GetById(Guid id, Guid userid) { 
-            var t = await _context.Transactions
-                .Include(t => t.user)
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userid);
-
-            if (t == null)
-            {
+            var t = await _repo.GetByIdAsync(id, userid);
+            if (t == null) { 
                 return null;
+
             }
 
             return new TransactionResponseDto
@@ -58,42 +56,34 @@ namespace Application.Services
                 Description = t.Description,
                 Date = t.Date,
                 UserName = t.user?.Name ?? "Unknown"
-
             };
         }
 
         public async Task<bool> Delete(Guid id, Guid userid) {
-            var transaction = await _context.Transactions
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userid);
+            var transaction = await _repo.GetByIdAsync(id, userid);
 
             if (transaction == null) {
                 return false;
-
             }
-
-            _context.Transactions.Remove(transaction);
-            await _context.SaveChangesAsync();
-            return true;
         
+            await _repo.DeleteAsync(transaction);
+            await _repo.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<bool> Update(Guid id, Guid userid, UpdateTransactionDto dto) { 
-            var trans = await _context.Transactions
-                .FirstOrDefaultAsync(t=> t.Id == id && t.UserId == userid);
-
-            if (trans == null)
-            {
+        public async Task<bool> Update(Guid id, Guid userid, UpdateTransactionDto dto) {
+            var trans = await _repo.GetByIdAsync(id, userid);
+            if (trans == null) {
                 return false;
             }
             
             trans.Amount = dto.Amount;
             trans.Category = dto.Category;
             trans.Description = dto.Description;
-            trans .Date = dto.Date; 
+            trans.Date = dto.Date;
 
-            await _context.SaveChangesAsync();
+            await _repo.SaveChangesAsync();
             return true;
-
         }
     }
 }

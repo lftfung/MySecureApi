@@ -1,8 +1,10 @@
 using Api.Middleware;
 using Application.Services;
 using Application.Validators;
+using Domain.Interfaces;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,13 +42,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<TransactionService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
-
 
 app.UseAuthentication(); 
 app.UseAuthorization();  
