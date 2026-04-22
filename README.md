@@ -8,6 +8,12 @@ A robust ASP.NET Core Web API demonstrating high-level software engineering prin
 - **Automated Testing**: 100% core logic validation using **xUnit** and **Moq** for behavior verification.
 - **Data Integrity**: Used **Entity Framework Core** and **DTOs** to ensure secure data flow and prevent over-posting.
 
+## Project Structure & Layers
+- **Domain**: Contains core entities and repository interfaces (The stablest layer).
+- **Application**: Holds business logic, services, and DTO mappings.
+- **Infrastructure**: Implements data access using EF Core and SQL Server/PostgreSQL.
+- **Api**: Handles HTTP requests, controllers, and API configurations.
+
 ## Getting Started
 1. Clone the repo.
 2. Restore dependencies: `dotnet restore`.
