@@ -93,19 +93,21 @@ Other: AutoMapper / DTOs, FluentValidation (in progress)
 ![Login Response](screenshots/login-response.png)  
 *JWT token received successfully*
 
-### 3. Create Transaction (Protected by JWT)
-![Create Transaction Request](screenshots/transaction-request.png)  
-*POST /api/Transaction with Bearer Token*
+### 3. Transaction CRUD Operations
+![Create Transaction](screenshots/transaction-request.png)  
+*POST /api/Transaction (Protected by JWT)*
 
 ![Transaction Success](screenshots/transaction-response.png)  
-*Transaction record created successfully*
+*Transaction created successfully*
 
-### 4. Database Verification
-![Users Table](screenshots/database-users.png)  
-![Transactions Table](screenshots/database-transactions.png)  
-*Data correctly persisted in PostgreSQL*
+**All CRUD operations are fully implemented and working:**
+- ✅ Create (POST)
+- ✅ Read All (GET)
+- ✅ Read by ID (GET)
+- ✅ Update (PUT)
+- ✅ Delete (DELETE)
 
-**All core flows (Register → Login → Protected Transaction CRUD) are fully functional.**
+All endpoints are protected by JWT authentication.
 
 ## Purpose
 This project serves as a bridge between my previous experience in complex C# systems (Unity game development) and modern enterprise backend development. It showcases my ability to design scalable, testable, and production-ready APIs
