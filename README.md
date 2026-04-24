@@ -47,6 +47,20 @@ docker-compose up --build
 ```bash
 dotnet test
 ```
+### Unit Test Results
+![Unit Test Results](screenshots/unit-test.png)
+
+*Comprehensive unit tests using xUnit and Moq (all tests passing).*
+
+### Swagger UI - API Endpoints
+![Swagger UI](screenshots/swagger-ui.png)
+
+*Shows Authentication (Register & Login) and full Transaction CRUD endpoints.*
+
+### Transaction Endpoint Example
+![Create Transaction](screenshots/transaction-create.png)
+
+*Example of POST /api/Transaction with request body.*
 
 ## Testing
 The project includes a dedicated test project with behavior verification for key services (e.g. TransactionService).
@@ -55,7 +69,6 @@ xUnit + Moq for mocking repositories
 Tests cover CRUD operations, validation, and edge cases
 
 ## Tech Stack
-
 Framework: .NET 8 + ASP.NET Core Web API
 ORM: Entity Framework Core
 Architecture: Clean Architecture + Repository Pattern
@@ -64,18 +77,41 @@ Database: PostgreSQL / SQL Server
 Containerization: Docker + docker-compose
 Other: AutoMapper / DTOs, FluentValidation (in progress)
 
-## Screenshots
+## Screenshots & Live Demo
 ### Swagger UI - API Endpoints
 
-![Swagger UI](https://github.com/user-attachments/assets/29d80876-84cd-49c0-8c7d-a8bf3e072c5b)
-<img width="372" height="333" alt="image" src="https://github.com/user-attachments/assets/75529a5e-2c61-4b1d-912e-a7c3ceb074a7" />
+### 1. User Registration
+![Register Request](screenshots/register-request.png)
 
-### Transaction Endpoint Example
-![Create Transaction](https://github.com/user-attachments/assets/d74befe9-313c-413a-9019-9de3ddac7dc8)
+*POST /api/Auth/register – Successfully creates a new user*
 
-### Unit Test Results
-![Unit Test Results](https://github.com/user-attachments/assets/b6472ef7-4812-4cc6-ab45-40e2b9ce8ec6)
+![Register Response + Database](screenshots/register-response.png)
 
+*Response message and user record saved in PostgreSQL*
+
+### 2. User Login (JWT Authentication)
+![Login Request](screenshots/login-request.png)
+
+*POST /api/Auth/login – Returns JWT token*
+
+![Login Response](screenshots/login-response.png)
+
+*JWT token received successfully*
+
+### 3. Create Transaction (Protected Endpoint)
+![Create Transaction Request](screenshots/transaction-request.png)
+
+*POST /api/Transaction with Bearer Token authentication*
+
+![Transaction Success Response](screenshots/transaction-response.png)
+
+*Transaction record created successfully*
+
+### 4. Database Verification
+![Users Table](screenshots/database-users.png)
+![Transactions Table](screenshots/database-transactions.png)
+
+*Data correctly persisted in the database*
 
 ## Purpose
 This project serves as a bridge between my previous experience in complex C# systems (Unity game development) and modern enterprise backend development. It showcases my ability to design scalable, testable, and production-ready APIs
