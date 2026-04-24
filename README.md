@@ -1,24 +1,71 @@
-# MySecureApi - Backend Financial System
+# MySecureApi - Secure Financial Management Web API
 
-A robust ASP.NET Core Web API demonstrating high-level software engineering principles. Designed to showcase my transition from **Unity/C# Game Development**  to professional **.NET Backend Architecture**.
+A robust **ASP.NET Core Web API** built with **.NET 8** and **Clean Architecture**.  
+This project demonstrates my transition from Unity/C# game development to professional backend engineering, focusing on **maintainability, testability, security, and scalability**.
 
 ## Technical Highlights
-- **Clean Architecture**: Decoupled layers (API, Application, Domain, Infrastructure) for maximum maintainability.
-- **Repository Pattern**: Abstracted data access layer to isolate database logic.
-- **Automated Testing**: 100% core logic validation using **xUnit** and **Moq** for behavior verification.
-- **Data Integrity**: Used **Entity Framework Core** and **DTOs** to ensure secure data flow and prevent over-posting.
 
-## Project Structure & Layers
-- **Domain**: Contains core entities and repository interfaces (The stablest layer).
-- **Application**: Holds business logic, services, and DTO mappings.
-- **Infrastructure**: Implements data access using EF Core and SQL Server/PostgreSQL.
-- **Api**: Handles HTTP requests, controllers, and API configurations.
+- **Clean Architecture** – Fully decoupled layers (API, Application, Domain, Infrastructure)
+- **Repository Pattern** + **Dependency Injection** – Clean separation of concerns
+- **Entity Framework Core** – Secure data persistence with PostgreSQL / SQL Server
+- **DTO Mapping** – Prevents over-posting and protects internal entities
+- **Automated Unit Testing** – Comprehensive tests using **xUnit + Moq** (behavior & state verification)
+- **Docker Support** – Ready for containerized deployment
 
-## Getting Started
-1. Clone the repo.
-2. Restore dependencies: `dotnet restore`.
-3. Run Unit Tests: `dotnet test`.
+## Project Structure
+MySecureApi/
+├── Api/                    # Controllers, Middleware, Program.cs
+├── Application/            # Services, DTOs, Business Logic, Validators
+├── Domain/                 # Entities, Repository Interfaces (most stable layer)
+├── Infrastructure/         # EF Core DbContext, Repository Implementations
+├── MyFinanceApi.Tests/     # xUnit + Moq unit tests
+├── docker-compose.yml      # Local development with database
+└── README.md
 
-<img width="1045" height="384" alt="image" src="https://github.com/user-attachments/assets/e18a0730-4be1-4d16-aef5-ac9f4e1f357e" />
+##  Getting Started
 
-This project bridges my experience in **complex C# systems (Unity)** and **cloud automation (AWS)** into a modern backend framework, focusing on building stable, testable, and enterprise-ready APIs.
+### Prerequisites
+- .NET 8 SDK
+- Docker (recommended)
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/lftfung/MySecureApi.git
+```
+### 1. Clone the repository
+```bash
+cd MySecureApi
+```
+### 2. Restore dependencies
+```bash
+dotnet restore
+```
+### 3. Run with Docker (recommended)
+```bash
+docker-compose up --build
+```
+### 4. Run Unit Tests
+```bash
+dotnet test
+```
+
+### Testing
+The project includes a dedicated test project with behavior verification for key services (e.g. TransactionService).
+
+xUnit + Moq for mocking repositories
+Tests cover CRUD operations, validation, and edge cases
+
+### Tech Stack
+
+Framework: .NET 8 + ASP.NET Core Web API
+ORM: Entity Framework Core
+Architecture: Clean Architecture + Repository Pattern
+Testing: xUnit, Moq
+Database: PostgreSQL / SQL Server
+Containerization: Docker + docker-compose
+Other: AutoMapper / DTOs, FluentValidation (in progress)
+
+### Screenshots
+
+### Purpose
+This project serves as a bridge between my previous experience in complex C# systems (Unity game development) and modern enterprise backend development. It showcases my ability to design scalable, testable, and production-ready APIs
