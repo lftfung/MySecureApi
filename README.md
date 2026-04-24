@@ -13,14 +13,16 @@ This project demonstrates my transition from Unity/C# game development to profes
 - **Docker Support** – Ready for containerized deployment
 
 ## Project Structure
+```bash
 MySecureApi/
-├── Api/                    # Controllers, Middleware, Program.cs
-├── Application/            # Services, DTOs, Business Logic, Validators
-├── Domain/                 # Entities, Repository Interfaces (most stable layer)
-├── Infrastructure/         # EF Core DbContext, Repository Implementations
-├── MyFinanceApi.Tests/     # xUnit + Moq unit tests
-├── docker-compose.yml      # Local development with database
+├── Api/                          # Controllers, Middleware, Program.cs
+├── Application/                  # Services, DTOs, Business Logic, Validators
+├── Domain/                       # Entities, Repository Interfaces (most stable layer)
+├── Infrastructure/               # EF Core DbContext, Repository Implementations
+├── MyFinanceApi.Tests/           # xUnit + Moq unit tests
+├── docker-compose.yml            # Local development with PostgreSQL
 └── README.md
+```
 
 ## Getting Started
 
@@ -46,13 +48,13 @@ docker-compose up --build
 dotnet test
 ```
 
-### Testing
+## Testing
 The project includes a dedicated test project with behavior verification for key services (e.g. TransactionService).
 
 xUnit + Moq for mocking repositories
 Tests cover CRUD operations, validation, and edge cases
 
-### Tech Stack
+## Tech Stack
 
 Framework: .NET 8 + ASP.NET Core Web API
 ORM: Entity Framework Core
@@ -62,7 +64,18 @@ Database: PostgreSQL / SQL Server
 Containerization: Docker + docker-compose
 Other: AutoMapper / DTOs, FluentValidation (in progress)
 
-### Screenshots
+## Screenshots
+### Swagger UI - API Endpoints
 
-### Purpose
+![Swagger UI](https://github.com/user-attachments/assets/29d80876-84cd-49c0-8c7d-a8bf3e072c5b)
+<img width="372" height="333" alt="image" src="https://github.com/user-attachments/assets/75529a5e-2c61-4b1d-912e-a7c3ceb074a7" />
+
+### Transaction Endpoint Example
+![Create Transaction](https://github.com/user-attachments/assets/d74befe9-313c-413a-9019-9de3ddac7dc8)
+
+### Unit Test Results
+![Unit Test Results](https://github.com/user-attachments/assets/b6472ef7-4812-4cc6-ab45-40e2b9ce8ec6)
+
+
+## Purpose
 This project serves as a bridge between my previous experience in complex C# systems (Unity game development) and modern enterprise backend development. It showcases my ability to design scalable, testable, and production-ready APIs
