@@ -22,7 +22,7 @@ MySecureApi/
 ├── docker-compose.yml      # Local development with database
 └── README.md
 
-##  Getting Started
+## Getting Started
 
 ### Prerequisites
 - .NET 8 SDK
@@ -31,9 +31,6 @@ MySecureApi/
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/lftfung/MySecureApi.git
-```
-### 1. Clone the repository
-```bash
 cd MySecureApi
 ```
 ### 2. Restore dependencies
