@@ -77,41 +77,35 @@ Database: PostgreSQL / SQL Server
 Containerization: Docker + docker-compose
 Other: AutoMapper / DTOs, FluentValidation (in progress)
 
-## Screenshots & Live Demo
-### Swagger UI - API Endpoints
+## 📸 Screenshots
 
 ### 1. User Registration
-![Register Request](screenshots/register-request.png)
-
+![Register Request](screenshots/register-request.png)  
 *POST /api/Auth/register – Successfully creates a new user*
 
-![Register Response + Database](screenshots/register-response.png)
-
-*Response message and user record saved in PostgreSQL*
+![Register Response](screenshots/register-response.png)  
+*Response message + user saved in database*
 
 ### 2. User Login (JWT Authentication)
-![Login Request](screenshots/login-request.png)
-
+![Login Request](screenshots/login-request.png)  
 *POST /api/Auth/login – Returns JWT token*
 
-![Login Response](screenshots/login-response.png)
-
+![Login Response](screenshots/login-response.png)  
 *JWT token received successfully*
 
-### 3. Create Transaction (Protected Endpoint)
-![Create Transaction Request](screenshots/transaction-request.png)
+### 3. Create Transaction (Protected by JWT)
+![Create Transaction Request](screenshots/transaction-request.png)  
+*POST /api/Transaction with Bearer Token*
 
-*POST /api/Transaction with Bearer Token authentication*
-
-![Transaction Success Response](screenshots/transaction-response.png)
-
+![Transaction Success](screenshots/transaction-response.png)  
 *Transaction record created successfully*
 
 ### 4. Database Verification
-![Users Table](screenshots/database-users.png)
-![Transactions Table](screenshots/database-transactions.png)
+![Users Table](screenshots/database-users.png)  
+![Transactions Table](screenshots/database-transactions.png)  
+*Data correctly persisted in PostgreSQL*
 
-*Data correctly persisted in the database*
+**All core flows (Register → Login → Protected Transaction CRUD) are fully functional.**
 
 ## Purpose
 This project serves as a bridge between my previous experience in complex C# systems (Unity game development) and modern enterprise backend development. It showcases my ability to design scalable, testable, and production-ready APIs
