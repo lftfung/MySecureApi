@@ -77,7 +77,7 @@ Database: PostgreSQL / SQL Server
 Containerization: Docker + docker-compose
 Other: AutoMapper / DTOs, FluentValidation (in progress)
 
-## 📸 Screenshots
+## Screenshots
 
 ### 1. User Registration
 ![Register Request](screenshots/register-request.png)  
