@@ -13,6 +13,6 @@ namespace Domain
         public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public Guid UserId { get; set; }
-        public virtual User user { get; set; } = null;
+        public virtual User User { get; set; } = null!;
     }
 }

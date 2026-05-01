@@ -3,20 +3,25 @@ using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Infrastructure.Repositories
+namespace MySecureApi.Infrastructure.Repositories
 {
     public class TransactionRepository : ITransactionRepository
     {
+
         private readonly AppDbContext _context;
 
         public TransactionRepository(AppDbContext context) { 
             _context = context;
+       
+
+
         }
 
         public async Task<AppTransaction> AddAsync(AppTransaction transaction) { 
@@ -33,7 +38,7 @@ namespace Infrastructure.Repositories
 
         public async Task<AppTransaction?> GetByIdAsync(Guid id, Guid userId) { 
             return await _context.Transactions
-                .Include(t => t.Id)
+                .Include(t => t.User)
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         }
 

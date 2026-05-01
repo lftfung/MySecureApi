@@ -1,9 +1,10 @@
-﻿using Moq;
-using Xunit;
-using Application.Services;
-using Application.DTOs;
-using Domain.Interfaces;
+﻿using MySecureApi.Application.DTOs;
+using MySecureApi.Application.Services;
 using Domain;
+using Domain.Interfaces;
+using MySecureApi.Infrastructure;
+using Moq;
+using Xunit;
 
 
 namespace MyFinanceApi.Tests;
@@ -11,11 +12,13 @@ namespace MyFinanceApi.Tests;
 public class UnitTest4
 {
     private readonly Mock<ITransactionRepository> _mockRepo;
+    private readonly Mock<ITransactionAIService> _mockAIService;
     private readonly TransactionService _service;
 
     public UnitTest4() { 
         _mockRepo = new Mock<ITransactionRepository>();
-        _service = new TransactionService(_mockRepo.Object);
+        _mockAIService = new Mock<ITransactionAIService>();
+        _service = new TransactionService(_mockRepo.Object , _mockAIService.Object);
     }
 
     [Fact]

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs
+namespace MySecureApi.Application.DTOs
 {
     public class UpdateTransactionDto
     {

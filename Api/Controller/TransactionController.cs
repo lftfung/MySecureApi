@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Claims;
-using Application.DTOs;
-using Application.Services;
-using Application.Validators;
+using MySecureApi.Application.DTOs;
+using MySecureApi.Application.Services;
+using MySecureApi.Application.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controller
+namespace MySecureApi.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

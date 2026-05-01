@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0NjRiNTMzOS03NzJkLTQzMmMtYmEyZi1iNzQ2YjEyZWQ3MWQiLCJ1bmlxdWVfbmFtZSI6IkppbW15IiwibmJmIjoxNzc3MDA4Mzc2LCJleHAiOjE3Nzc2MTMxNzYsImlhdCI6MTc3NzAwODM3NiwiaXNzIjoiTXlGaW5hbmNlQXBpIiwiYXVkIjoiTXlGaW5hbmNlVXNlcnMifQ.i3cvu1IEFd7URmZPCDPdLYyh4BbQs53cER_KT5QpWYE
 
 {
-  "amount": -10,
+  "amount": 10,
   "category": "",
-  "description": "lunch set-B",
-  "date": "2026-04-30T12:00:00Z"
+  "description": "salary abc company",
+  "date": "2026-04-20T12:00:00Z"
 }

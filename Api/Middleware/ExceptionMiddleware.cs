@@ -1,8 +1,8 @@
-﻿namespace Api.Middleware
+﻿namespace MySecureApi.Api.Middleware
 {
     using System.Net;
     using System.Text.Json;
-    using Application.DTOs;
+    using MySecureApi.Application.DTOs;
 
     public class ExceptionMiddleware
     {

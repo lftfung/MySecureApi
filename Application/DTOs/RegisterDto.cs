@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs
+namespace MySecureApi.Application.DTOs
 {
     public class RegisterDto
     {

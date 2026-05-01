@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Xunit;
-using Application.Services;
-using Application.DTOs;
+using MySecureApi.Application.Services;
+using MySecureApi.Application.DTOs;
 using Domain.Interfaces;
 using Domain;
 
@@ -11,11 +11,13 @@ namespace MyFinanceApi.Tests;
 public class UnitTest3
 {
     private readonly Mock<ITransactionRepository> _mockRepo;
+    private readonly Mock<ITransactionAIService> _mockAIService;
     private readonly TransactionService _service;
 
     public UnitTest3() { 
         _mockRepo = new Mock<ITransactionRepository>();
-        _service = new TransactionService(_mockRepo.Object);
+        _mockAIService = new Mock<ITransactionAIService>();
+        _service = new TransactionService(_mockRepo.Object, _mockAIService.Object);
     }
 
     [Fact]
@@ -29,7 +31,7 @@ public class UnitTest3
             UserId = userId,
             Amount = 500,
             Category = "Transport",
-            user = new User { Name = "Jack"}
+            User = new User { Name = "Jack"}
         
         };
 

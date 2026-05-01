@@ -1,8 +1,8 @@
-﻿using Application.DTOs;
-using Application.Services;
+﻿using MySecureApi.Application.DTOs;
+using MySecureApi.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controller
+namespace MySecureApi.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -25,8 +25,11 @@ namespace Api.Controller
         public async Task<IActionResult> Login(LoginDto dto) { 
             var result = await _authService.Login(dto);
 
-            if (result == "Login successfull!") {
-                return Ok(new { message = result });
+            if (result.StartsWith("eyJ")) {
+                return Ok(new { 
+                    message = "Login successful token: ",
+                    token = result
+                });
             }
 
             return BadRequest(new {message = result });

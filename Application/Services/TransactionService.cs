@@ -1,7 +1,7 @@
-﻿using Application.DTOs;
+﻿using MySecureApi.Application.DTOs;
 using Domain;
 using Domain.Interfaces;
-using Infrastructure;
+using MySecureApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,22 +9,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace MySecureApi.Application.Services
 {
     public class TransactionService
     {
         private readonly ITransactionRepository _repo;
+        private readonly ITransactionAIService _aiService;
 
-        public TransactionService(ITransactionRepository repo) {
+        public TransactionService(ITransactionRepository repo, ITransactionAIService aIService) {
 
             _repo = repo;
+            _aiService = aIService;
         }
 
         public async Task<AppTransaction> Create(CreateTransactionDto dto, Guid userId) {
+
+            var category = dto.Category;
+            if (string.IsNullOrWhiteSpace(category)) {
+                category = await _aiService.PredictCategoryAsync(dto.Description);
+            }
+
             var transaction = new AppTransaction
             {
                 Amount = dto.Amount,
-                Category = dto.Category,
+                Category = category,
                 Description = dto.Description,
                 Date = dto.Date,
                 UserId = userId
@@ -55,7 +63,7 @@ namespace Application.Services
                 Category = t.Category,
                 Description = t.Description,
                 Date = t.Date,
-                UserName = t.user?.Name ?? "Unknown"
+                UserName = t.User?.Name ?? "Unknown"
             };
         }
 

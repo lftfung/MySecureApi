@@ -7,9 +7,9 @@ using System.Security.Claims;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
-using Application.DTOs;
+using MySecureApi.Application.DTOs;
 using Domain;
-using Infrastructure;
+using MySecureApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt; 
@@ -17,7 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 
 
 using BC = BCrypt.Net.BCrypt;
-namespace Application.Services
+namespace MySecureApi.Application.Services
 {
     public class AuthService
     {
