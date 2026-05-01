@@ -1,20 +1,24 @@
-using MySecureApi.Api.Middleware;
-using MySecureApi.Application.Services;
-using MySecureApi.Application.Validators;
-using Domain.Interfaces;
 using FluentValidation;
-using MySecureApi.Infrastructure;
-using MySecureApi.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MySecureApi.Api.Middleware;
+using MySecureApi.Application.Services;
+using MySecureApi.Application.Validators;
+using MySecureApi.Infrastructure;
+using MySecureApi.Application.Interfaces;
+using MySecureApi.Infrastructure.Repositories;
+using MySecureApi.Api.Filters;
 using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionValidator>();
 
@@ -25,6 +29,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionAIService, MockAIService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

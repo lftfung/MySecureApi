@@ -2,7 +2,7 @@
 using Xunit;
 using MySecureApi.Application.Services;
 using MySecureApi.Application.DTOs;
-using Domain.Interfaces;
+using MySecureApi.Application.Interfaces;
 using Domain;
 
 

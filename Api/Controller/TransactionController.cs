@@ -22,37 +22,28 @@ namespace MySecureApi.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTransactionDto dto)
         {
-            var validator = new CreateTransactionValidator();
-            var validationResult = await validator.ValidateAsync(dto);
+            var userId = GetUserId();
+            if (userId == Guid.Empty) return Unauthorized("User ID not found");
 
-            if (!validationResult.IsValid) { 
-                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
-            }
-
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdString)) {
-                return Unauthorized("unfind userid");
-            }
-
-            var userid = Guid.Parse(userIdString);
-
-            var result = await _transactionService.Create(dto, userid);
-            return Ok(new { message = "record success ", data = result });
+            var result = await _transactionService.Create(dto, userId);
+            return Ok(new {message = "Transaction created successfully", data = result});
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMyTransactions()
         {
 
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userId = GetUserId();
+            if (userId == Guid.Empty) return Unauthorized("User ID nt Found");
             var list = await _transactionService.GetAllByUserId(userId);
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDetail(Guid id) {
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userId = GetUserId();
+            if (userId == Guid.Empty) return Unauthorized("User ID nt Found");
+
             var transaction = await _transactionService.GetById(id, userId);
 
             if (transaction == null) {
@@ -66,7 +57,9 @@ namespace MySecureApi.Api.Controllers
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id) {
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userId = GetUserId();
+            if (userId == Guid.Empty) return Unauthorized("User ID not found");
+
             var success = await _transactionService.Delete(id, userId);
 
             if (!success) return NotFound("Not found transaction or no right to delete");
@@ -75,23 +68,11 @@ namespace MySecureApi.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, UpdateTransactionDto dto) {
+        public async Task<IActionResult> Update(Guid id, [FromBody]UpdateTransactionDto dto) {
 
-            var validator = new CreateTransactionValidator();
+            var userId = GetUserId();
+            if (userId == Guid.Empty) return Unauthorized("User ID not found");
 
-            var validationResult = await validator.ValidateAsync(new CreateTransactionDto
-            {
-                Amount = dto.Amount,
-                Category = dto.Category,
-                Date = dto.Date,
-                Description = dto.Description,
-            });
-
-            if (!validationResult.IsValid) {
-                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
-            }
-
-            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var success = await _transactionService.Update(id, userId, dto);
 
             if (!success) return NotFound("Update failed, not found or no right");
@@ -100,7 +81,12 @@ namespace MySecureApi.Api.Controllers
         
         }
 
+        private Guid GetUserId()
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Guid.TryParse(userIdString, out var userId) ? userId : Guid.Empty;
+        }
 
-       
+
     }
 }

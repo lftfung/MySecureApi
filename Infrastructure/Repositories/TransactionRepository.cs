@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Interfaces;
+using MySecureApi.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

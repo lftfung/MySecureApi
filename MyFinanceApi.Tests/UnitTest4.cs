@@ -1,8 +1,7 @@
 ﻿using MySecureApi.Application.DTOs;
 using MySecureApi.Application.Services;
 using Domain;
-using Domain.Interfaces;
-using MySecureApi.Infrastructure;
+using MySecureApi.Application.Interfaces;
 using Moq;
 using Xunit;
 

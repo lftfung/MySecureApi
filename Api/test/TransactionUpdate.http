@@ -1,9 +1,9 @@
-PUT https://localhost:7121/api/transaction/f57d47a4-2701-450e-8f05-696f6dff5745
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0NjRiNTMzOS03NzJkLTQzMmMtYmEyZi1iNzQ2YjEyZWQ3MWQiLCJ1bmlxdWVfbmFtZSI6IkppbW15IiwibmJmIjoxNzc3NDc1MTY0LCJleHAiOjE3NzgwNzk5NjQsImlhdCI6MTc3NzQ3NTE2NCwiaXNzIjoiTXlGaW5hbmNlQXBpIiwiYXVkIjoiTXlGaW5hbmNlVXNlcnMifQ.wIkZ0e5VJNNFRsBtZ4LtPHWav86XBPIqKYKE6Mr3Bto
-
+PUT https://localhost:7121/api/transaction/cd0c1d3e-31ab-4f6d-8307-babca23a41a5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyNzU2ODcyYy00ZGEyLTQzODMtYWZlZS0xNzk2ODNmN2I3ODAiLCJ1bmlxdWVfbmFtZSI6IkppbW15IiwibmJmIjoxNzc3NjMzMzc5LCJleHAiOjE3NzgyMzgxNzksImlhdCI6MTc3NzYzMzM3OSwiaXNzIjoiTXlGaW5hbmNlQXBpIiwiYXVkIjoiTXlGaW5hbmNlVXNlcnMifQ.jCnFfnRj34DzA4f41Xdh8cg1zHrVuRBsyaY3dPKPciI
+Content-Type: application/json
 {
-  "amount": 25,
-  "category": "abc",
-  "description": "abc",
-  "date": "2026-04-16T12:00:00Z"
+  "amount": 10,
+  "category": "123",
+  "description": "salary abc company",
+  "date": "2026-04-20T12:00:00Z"
 }

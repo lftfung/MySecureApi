@@ -9,30 +9,29 @@ using System.Text;
 using System.Threading.Tasks;
 using MySecureApi.Application.DTOs;
 using Domain;
-using MySecureApi.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt; 
-using Microsoft.IdentityModel.Tokens;    
+using Microsoft.IdentityModel.Tokens;
 
 
 using BC = BCrypt.Net.BCrypt;
+using MySecureApi.Application.Interfaces;
 namespace MySecureApi.Application.Services
 {
     public class AuthService
     {
-        private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
-
-        public AuthService(AppDbContext context, IConfiguration config)
+        
+        public AuthService(IUserRepository userRepository, IConfiguration config)
         {
-            _context = context;
+            _userRepository = userRepository;
             _config = config;
         }
 
         public async Task<string> Register(RegisterDto dto)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+            if (await _userRepository.IsEmailExistsAsync(dto.Email))
             {
                 return "Email already exists";
             }
@@ -48,15 +47,14 @@ namespace MySecureApi.Application.Services
 
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _userRepository.AddAsync(user);
 
             return "User registered successfully!";
         }
 
         public async Task<string> Login(LoginDto dto) { 
         
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _userRepository.GetByEmailAsync(dto.Email);
             if (user == null)
             {
                 return "User not Found";

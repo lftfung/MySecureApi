@@ -27,7 +27,7 @@ namespace MySecureApi.Api.Controllers
 
             if (result.StartsWith("eyJ")) {
                 return Ok(new { 
-                    message = "Login successful token: ",
+                    message = "Login successful",
                     token = result
                 });
             }
