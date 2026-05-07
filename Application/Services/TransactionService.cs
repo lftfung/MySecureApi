@@ -1,11 +1,7 @@
 ﻿using MySecureApi.Application.DTOs;
 using Domain;
 using MySecureApi.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MySecureApi.Application.Services
 {
@@ -20,7 +16,7 @@ namespace MySecureApi.Application.Services
             _aiService = aIService;
         }
 
-        public async Task<AppTransaction> Create(CreateTransactionDto dto, Guid userId) {
+        public async Task<ApiResponse<TransactionResponseDto>> Create(CreateTransactionDto dto, Guid userId) {
 
             var category = dto.Category;
             if (string.IsNullOrWhiteSpace(category)) {
@@ -38,23 +34,46 @@ namespace MySecureApi.Application.Services
 
             await _repo.AddAsync(transaction);
             await _repo.SaveChangesAsync();
-            return transaction;
-        
+
+            var result = new TransactionResponseDto
+            {
+                Id = transaction.Id,
+                Amount = transaction.Amount,
+                Category = transaction.Category,
+                Description = transaction.Description,
+                Date = transaction.Date,
+                UserName = transaction.User?.Name ?? "Unknown"
+            };
+            return ApiResponse<TransactionResponseDto>.SuccessResponse(result);
+
         }
 
-        public async Task<List<AppTransaction>> GetAllByUserId(Guid userid) { 
-            return await _repo.GetByUserIdAsync(userid);
+        public async Task<ApiResponse<List<TransactionResponseDto>>> GetAllByUserId(Guid userid) { 
+            var domains = await _repo.GetByUserIdAsync(userid);
 
+            List<TransactionResponseDto> results = new List<TransactionResponseDto>();
+            foreach (var domain in domains) {
+                results.Add(new TransactionResponseDto
+                {
+                    Id = domain.Id,
+                    Amount = domain.Amount,
+                    Category = domain.Category,
+                    Description = domain.Description,
+                    Date = domain.Date,
+                    UserName = domain.User?.Name ?? "Unknown"
+                });
+            
+            }
+            return ApiResponse<List<TransactionResponseDto>>.SuccessResponse(results);
         }
 
-        public async Task<TransactionResponseDto?> GetById(Guid id, Guid userid) { 
+        public async Task<ApiResponse<TransactionResponseDto>> GetById(Guid id, Guid userid) { 
             var t = await _repo.GetByIdAsync(id, userid);
             if (t == null) { 
-                return null;
-
+                return ApiResponse<TransactionResponseDto>.ErrorResponse("Transaction not found or no permission");
             }
 
-            return new TransactionResponseDto
+            var result = new TransactionResponseDto
             {
                 Id = t.Id,
                 Amount = t.Amount,
@@ -63,24 +82,27 @@ namespace MySecureApi.Application.Services
                 Date = t.Date,
                 UserName = t.User?.Name ?? "Unknown"
             };
+
+            return ApiResponse<TransactionResponseDto>.SuccessResponse(result);
         }
 
-        public async Task<bool> Delete(Guid id, Guid userid) {
+        public async Task<ApiResponse<bool>> Delete(Guid id, Guid userid) {
             var transaction = await _repo.GetByIdAsync(id, userid);
 
             if (transaction == null) {
-                return false;
+                return ApiResponse<bool>.ErrorResponse("Transaction not found or no permission");
             }
         
             await _repo.DeleteAsync(transaction);
             await _repo.SaveChangesAsync();
-            return true;
+
+            return ApiResponse<bool>.SuccessResponse(true);
         }
 
-        public async Task<bool> Update(Guid id, Guid userid, UpdateTransactionDto dto) {
+        public async Task<ApiResponse<bool>> Update(Guid id, Guid userid, UpdateTransactionDto dto) {
             var trans = await _repo.GetByIdAsync(id, userid);
             if (trans == null) {
-                return false;
+                return ApiResponse<bool>.ErrorResponse("Transaction not found or no permission");
             }
             
             trans.Amount = dto.Amount;
@@ -89,7 +111,7 @@ namespace MySecureApi.Application.Services
             trans.Date = dto.Date;
 
             await _repo.SaveChangesAsync();
-            return true;
+            return ApiResponse<bool>.SuccessResponse(true);
         }
     }
 }

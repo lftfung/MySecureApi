@@ -29,11 +29,11 @@ namespace MySecureApi.Application.Services
             _config = config;
         }
 
-        public async Task<string> Register(RegisterDto dto)
+        public async Task<ApiResponse<string>> Register(RegisterDto dto)
         {
             if (await _userRepository.IsEmailExistsAsync(dto.Email))
             {
-                return "Email already exists";
+                return ApiResponse<string>.ErrorResponse("Email already exists");
             }
 
             string passwordHash = BC.HashPassword(dto.Password);
@@ -49,22 +49,17 @@ namespace MySecureApi.Application.Services
 
             await _userRepository.AddAsync(user);
 
-            return "User registered successfully!";
+            return ApiResponse<string>.SuccessResponse("User registered successfully!");
         }
 
-        public async Task<string> Login(LoginDto dto) { 
+        public async Task<ApiResponse<object>> Login(LoginDto dto) { 
         
             var user = await _userRepository.GetByEmailAsync(dto.Email);
-            if (user == null)
-            {
-                return "User not Found";
-            }
-
             bool isPasswordValid = BC.Verify(dto.Password, user.PasswordHash);
 
-            if (!isPasswordValid)
+            if (user == null || !isPasswordValid)
             {
-                return "Invalid password";
+                return ApiResponse<object>.ErrorResponse("User not Found or Invalid password");
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -82,7 +77,11 @@ namespace MySecureApi.Application.Services
 
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var jwtToken = tokenHandler.WriteToken(token);
+            return ApiResponse<object>.SuccessResponse(
+                new { token = jwtToken },
+                "Login successful"
+                );
 
            
 

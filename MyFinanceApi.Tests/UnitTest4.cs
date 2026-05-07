@@ -46,7 +46,7 @@ public class UnitTest4
 
         var result = await _service.Update(transactionId, userId, updateDto);
         
-        Assert.True(result);
+        Assert.True(result.Data);
         Assert.Equal(200, existingTransaction.Amount);
 
         _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);

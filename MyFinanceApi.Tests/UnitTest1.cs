@@ -34,7 +34,7 @@ public class UnitTest1
 
         var result = await _service.Create(dto, userId);
         Assert.NotNull(result);
-        Assert.Equal(500, result.Amount);
+        Assert.Equal(500, result.Data.Amount);
         _mockRepo.Verify(r => r.AddAsync(It.IsAny<AppTransaction>()), Times.Once);
     
     }

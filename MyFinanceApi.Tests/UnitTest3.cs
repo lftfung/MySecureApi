@@ -41,9 +41,9 @@ public class UnitTest3
         var result = await _service.GetById(transactionId, userId);
 
         Assert.NotNull(result);
-        Assert.Equal(500, result.Amount);
-        Assert.Equal("Transport", result.Category);
-        Assert.Equal("Jack", result.UserName);
+        Assert.Equal(500, result.Data.Amount);
+        Assert.Equal("Transport", result.Data.Category);
+        Assert.Equal("Jack", result.Data.UserName);
 
     }
 }

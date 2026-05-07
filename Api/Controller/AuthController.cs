@@ -18,21 +18,15 @@ namespace MySecureApi.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto) { 
             var result = await _authService.Register(dto);
-            return Ok(new { message = result });
+           
+            return result.Success ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto) { 
             var result = await _authService.Login(dto);
 
-            if (result.StartsWith("eyJ")) {
-                return Ok(new { 
-                    message = "Login successful",
-                    token = result
-                });
-            }
-
-            return BadRequest(new {message = result });
+            return result.Success ? Ok(result) : BadRequest(result);
         }
     }
 }

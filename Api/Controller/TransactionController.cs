@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using MySecureApi.Application.DTOs;
 using MySecureApi.Application.Services;
-using MySecureApi.Application.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,10 +21,11 @@ namespace MySecureApi.Api.Controllers
         public async Task<IActionResult> Create(CreateTransactionDto dto)
         {
             var userId = GetUserId();
-            if (userId == Guid.Empty) return Unauthorized("User ID not found");
+            if (userId == Guid.Empty) return Unauthorized(UserIdNotFound());
 
             var result = await _transactionService.Create(dto, userId);
-            return Ok(new {message = "Transaction created successfully", data = result});
+
+            return result.Success ? Ok(result) : BadRequest(result);
         }
 
         [HttpGet]
@@ -34,51 +33,42 @@ namespace MySecureApi.Api.Controllers
         {
 
             var userId = GetUserId();
-            if (userId == Guid.Empty) return Unauthorized("User ID nt Found");
-            var list = await _transactionService.GetAllByUserId(userId);
-            return Ok(list);
+            if (userId == Guid.Empty) return Unauthorized(UserIdNotFound());
+            var result = await _transactionService.GetAllByUserId(userId);
+            return result.Success ? Ok(result) : BadRequest(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDetail(Guid id) {
             var userId = GetUserId();
-            if (userId == Guid.Empty) return Unauthorized("User ID nt Found");
+            if (userId == Guid.Empty) return Unauthorized(UserIdNotFound());
 
-            var transaction = await _transactionService.GetById(id, userId);
+            var result = await _transactionService.GetById(id, userId);
 
-            if (transaction == null) {
-                return NotFound("Not Found Data");
+            return result.Success ? Ok(result) : NotFound(result);
 
-
-            }
-
-            return Ok(transaction);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id) {
             var userId = GetUserId();
-            if (userId == Guid.Empty) return Unauthorized("User ID not found");
+            if (userId == Guid.Empty) return Unauthorized(UserIdNotFound());
 
-            var success = await _transactionService.Delete(id, userId);
+            var result = await _transactionService.Delete(id, userId);
 
-            if (!success) return NotFound("Not found transaction or no right to delete");
-
-            return Ok(new { message = "Delete success" });
+            return result.Success ? Ok(result) : NotFound(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody]UpdateTransactionDto dto) {
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTransactionDto dto) {
 
             var userId = GetUserId();
-            if (userId == Guid.Empty) return Unauthorized("User ID not found");
+            if (userId == Guid.Empty) return Unauthorized(UserIdNotFound());
 
-            var success = await _transactionService.Update(id, userId, dto);
+            var result = await _transactionService.Update(id, userId, dto);
 
-            if (!success) return NotFound("Update failed, not found or no right");
+            return result.Success ? Ok(result) : NotFound(result);
 
-            return Ok(new { message = "Update success" });
-        
         }
 
         private Guid GetUserId()
@@ -87,6 +77,9 @@ namespace MySecureApi.Api.Controllers
             return Guid.TryParse(userIdString, out var userId) ? userId : Guid.Empty;
         }
 
+        private ApiResponse<string> UserIdNotFound() {
 
+            return ApiResponse<string>.ErrorResponse("User ID not found");
+        }
     }
 }

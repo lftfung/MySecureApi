@@ -33,7 +33,7 @@ public class UnitTest2
 
         var result = await _service.Delete(transactionId, userId);
 
-        Assert.True(result); 
+        Assert.True(result.Data); 
 
         _mockRepo.Verify(r => r.DeleteAsync(existingTransaction), Times.Once);
         _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);

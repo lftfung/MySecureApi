@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MySecureApi.Api.Filters;
 using MySecureApi.Api.Middleware;
+using MySecureApi.Application.DTOs;
+using MySecureApi.Application.Interfaces;
 using MySecureApi.Application.Services;
 using MySecureApi.Application.Validators;
 using MySecureApi.Infrastructure;
-using MySecureApi.Application.Interfaces;
 using MySecureApi.Infrastructure.Repositories;
-using MySecureApi.Api.Filters;
 using System;
 using System.Text;
 
@@ -43,6 +44,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+            {
+                context.HandleResponse();
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+
+                var response = ApiResponse<string>.ErrorResponse(
+                    "Invalid or expired token. Please login again.");
+
+                await context.Response.WriteAsJsonAsync(response);
+
+            },
+
+            OnForbidden = async context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+
+                var response = ApiResponse<string>.ErrorResponse(
+                    "You don't have permission to access this resource.");
+
+                await context.Response.WriteAsJsonAsync(response);
+            }
         };
     });
 
