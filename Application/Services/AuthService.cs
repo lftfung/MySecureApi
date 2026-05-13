@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using MySecureApi.Application.DTOs;
 using Domain;
 using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt; 
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -22,7 +22,7 @@ namespace MySecureApi.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
-        
+
         public AuthService(IUserRepository userRepository, IConfiguration config)
         {
             _userRepository = userRepository;
@@ -41,7 +41,7 @@ namespace MySecureApi.Application.Services
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Name  = dto.Username,
+                Name = dto.Username,
                 Email = dto.Email,
                 PasswordHash = passwordHash
 
@@ -52,8 +52,9 @@ namespace MySecureApi.Application.Services
             return ApiResponse<string>.SuccessResponse("User registered successfully!");
         }
 
-        public async Task<ApiResponse<object>> Login(LoginDto dto) { 
-        
+        public async Task<ApiResponse<object>> Login(LoginDto dto)
+        {
+
             var user = await _userRepository.GetByEmailAsync(dto.Email);
             bool isPasswordValid = BC.Verify(dto.Password, user.PasswordHash);
 
@@ -65,8 +66,9 @@ namespace MySecureApi.Application.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
 
-            var tokenDescriptor = new SecurityTokenDescriptor {
-                    Subject = new ClaimsIdentity(new[] {
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Name)
                 }),
@@ -83,9 +85,9 @@ namespace MySecureApi.Application.Services
                 "Login successful"
                 );
 
-           
 
-         
+
+
         }
     }
 }

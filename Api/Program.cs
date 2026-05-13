@@ -13,6 +13,8 @@ using MySecureApi.Infrastructure;
 using MySecureApi.Infrastructure.Repositories;
 using System;
 using System.Text;
+using Microsoft.AspNetCore.Http;                    
+using MediatR;                                   
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +28,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionValidator>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(MySecureApi.Application.Commands.CreateTransactionCommand).Assembly);
+});
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionAIService, MockAIService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
