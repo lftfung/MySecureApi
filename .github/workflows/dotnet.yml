@@ -1,0 +1,90 @@
+name: .NET 8 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build-test-publish:
+    name: Build, Test, Coverage & Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.slnx') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build solution (Release)
+      run: dotnet build --no-restore --configuration Release --verbosity minimal
+
+    - name: Run tests with XPlat Code Coverage
+      run: |
+        dotnet test --no-build --configuration Release \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./TestResults \
+          --logger "trx"
+
+    - name: Upload raw test & coverage artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: TestResults/
+        retention-days: 14
+
+    - name: Publish test results to PR / Checks
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: TestResults/**/*.trx
+        comment_mode: always
+
+    - name: Install ReportGenerator tool
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Generate HTML coverage report
+      run: |
+        reportgenerator \
+          -reports:./TestResults/**/coverage.cobertura.xml \
+          -targetdir:./CoverageReport \
+          -reporttypes:Html;TextSummary;Badges
+
+    - name: Upload coverage report artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-report
+        path: CoverageReport/
+        retention-days: 14
+
+    - name: Publish Api project
+      run: dotnet publish Api/Api.csproj --no-build --configuration Release -o ./publish/Api
+
+    - name: Upload publish artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-publish
+        path: ./publish/Api
+        retention-days: 14
