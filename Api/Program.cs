@@ -17,6 +17,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>(optional: true);
+}
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilter>();
