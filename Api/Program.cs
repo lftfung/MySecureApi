@@ -1,5 +1,7 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,10 +13,7 @@ using MySecureApi.Application.Services;
 using MySecureApi.Application.Validators;
 using MySecureApi.Infrastructure;
 using MySecureApi.Infrastructure.Repositories;
-using System;
 using System.Text;
-using Microsoft.AspNetCore.Http;                    
-using MediatR;                                   
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,10 +31,11 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(MySecureApi.Application.Commands.CreateTransactionCommand).Assembly);
 });
-builder.Services.AddScoped<AuthService>();
+
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionAIService, MockAIService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<AuthService>();  
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -63,7 +63,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     "Invalid or expired token. Please login again.");
 
                 await context.Response.WriteAsJsonAsync(response);
-
             },
 
             OnForbidden = async context =>
@@ -80,14 +79,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "MySecureApi",
         Version = "v1",
         Description = "Personal Finance Management API"
-
     });
 });
 
@@ -96,7 +94,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
@@ -108,4 +106,3 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.Run();
-

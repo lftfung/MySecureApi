@@ -13,11 +13,11 @@ namespace MySecureApi.Api.Controllers
     [Authorize]
     public class TransactionController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly ISender _sender;
 
-        public TransactionController(IMediator mediator)
+        public TransactionController(ISender sender)
         {
-            _mediator = mediator;
+            _sender = sender;
         }
 
         [HttpPost]
@@ -28,7 +28,7 @@ namespace MySecureApi.Api.Controllers
                 return Unauthorized(UserIdNotFound());
 
             var command = new CreateTransactionCommand(dto, userId);
-            var result = await _mediator.Send(command);
+            var result = await _sender.Send(command);
 
             return result.Success ? Ok(result) : BadRequest(result);
         }
@@ -41,7 +41,7 @@ namespace MySecureApi.Api.Controllers
                 return Unauthorized(UserIdNotFound());
 
             var query = new GetMyTransactionsQuery(userId);
-            var result = await _mediator.Send(query);
+            var result = await _sender.Send(query);
 
             return result.Success ? Ok(result) : BadRequest(result);
         }
@@ -54,7 +54,7 @@ namespace MySecureApi.Api.Controllers
                 return Unauthorized(UserIdNotFound());
 
             var query = new GetTransactionByIdQuery(id, userId);
-            var result = await _mediator.Send(query);
+            var result = await _sender.Send(query);
 
             return result.Success ? Ok(result) : NotFound(result);
         }
@@ -67,7 +67,7 @@ namespace MySecureApi.Api.Controllers
                 return Unauthorized(UserIdNotFound());
 
             var command = new DeleteTransactionCommand(id, userId);
-            var result = await _mediator.Send(command);
+            var result = await _sender.Send(command);
 
             return result.Success ? Ok(result) : NotFound(result);
         }
@@ -80,7 +80,7 @@ namespace MySecureApi.Api.Controllers
                 return Unauthorized(UserIdNotFound());
 
             var command = new UpdateTransactionCommand(id, dto, userId);
-            var result = await _mediator.Send(command);
+            var result = await _sender.Send(command);
 
             return result.Success ? Ok(result) : NotFound(result);
         }
