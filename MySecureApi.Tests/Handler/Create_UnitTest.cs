@@ -7,7 +7,7 @@ using MySecureApi.Application.Handlers;
 using MySecureApi.Application.Interfaces;
 using Xunit;
 
-namespace MyFinanceApi.Tests.Handler;
+namespace MySecureApi.Tests.Handler;
 
 public class Create_UnitTest
 {

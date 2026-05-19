@@ -7,8 +7,8 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: your_password_here  # 這裡設定你的資料庫密碼
-      POSTGRES_DB: MyFinanceDb
+      POSTGRES_PASSWORD: your_password_here 
+      POSTGRES_DB: MySecureApiDb
     ports:
       - "5432:5432"
     volumes:

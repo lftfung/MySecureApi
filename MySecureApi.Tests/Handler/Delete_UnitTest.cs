@@ -2,54 +2,42 @@
 using MediatR;
 using Moq;
 using MySecureApi.Application.Commands;
-using MySecureApi.Application.DTOs;
 using MySecureApi.Application.Handlers;
 using MySecureApi.Application.Interfaces;
 using Xunit;
 
-namespace MyFinanceApi.Tests.Handler;
+namespace MySecureApi.Tests.Handler;
 
-public class GetId_UnitTest
+public class Delete_UnitTest
 {
     private readonly Mock<ITransactionRepository> _mockRepo;
-    private readonly UpdateTransactionCommandHandler _handler;
+    private readonly DeleteTransactionCommandHandler _handler;
 
-    public GetId_UnitTest()
+    public Delete_UnitTest()
     {
         _mockRepo = new Mock<ITransactionRepository>();
-        _handler = new UpdateTransactionCommandHandler(_mockRepo.Object);
+        _handler = new DeleteTransactionCommandHandler(_mockRepo.Object);
     }
 
     [Fact]
-    public async Task Update_ShouldReturnTrue_WhenTransactionExists()
+    public async Task Delete_ShouldReturnTrue_WhenTransactionExists()
     {
         var transactionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
 
-        var existingTransaction = new AppTransaction
-        {
-            Id = transactionId,
-            UserId = userId,
-            Amount = 100
-        };
-
-        var updateDto = new UpdateTransactionDto
-        {
-            Amount = 200,
-            Category = "Food",
-            Date = DateTime.UtcNow
-        };
+        var existingTransaction = new AppTransaction { Id = transactionId, UserId = userId };
 
         _mockRepo.Setup(r => r.GetByIdAsync(transactionId, userId))
                  .ReturnsAsync(existingTransaction);
 
-        var command = new UpdateTransactionCommand(transactionId, updateDto, userId);
+        var command = new DeleteTransactionCommand(transactionId, userId);
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
         Assert.True(result.Success);
         Assert.True(result.Data);
 
+        _mockRepo.Verify(r => r.DeleteAsync(existingTransaction), Times.Once);
         _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
     }
 }

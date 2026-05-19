@@ -19,11 +19,10 @@ MySecureApi/
 ├── Application/                  # Services, DTOs, Business Logic, Validators
 ├── Domain/                       # Entities, Repository Interfaces (most stable layer)
 ├── Infrastructure/               # EF Core DbContext, Repository Implementations
-├── MyFinanceApi.Tests/           # xUnit + Moq unit tests
+├── MySecureApi.Tests/            # xUnit + Moq unit tests
 ├── docker-compose.yml            # Local development with PostgreSQL
 └── README.md
 ```
-
 ## Getting Started
 
 ### Prerequisites
