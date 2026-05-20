@@ -75,8 +75,6 @@ Tests cover CRUD operations, validation, and edge cases
 
 ## CI/CD Pipeline
 
-This repository now includes a **professional CI/CD pipeline** — a key differentiator for production-ready projects and technical interviews.
-
 **What the pipeline delivers on every push and pull request to `main`:**
 
 - Builds the full solution in Release mode with NuGet caching
@@ -85,7 +83,7 @@ This repository now includes a **professional CI/CD pipeline** — a key differe
 - Generates a full **HTML coverage report** (plus TextSummary) via ReportGenerator — downloadable as artifact
 - Publishes the `Api` project output as a ready-to-deploy artifact
 
-**How to inspect results (highly recommended for interviews):**
+**How to inspect results**
 
 1. Go to the **Actions** tab in this repository
 2. Click on the latest workflow run
@@ -104,7 +102,7 @@ Testing: xUnit, Moq, coverlet (XPlat Code Coverage)
 **CI/CD:** GitHub Actions (build, test, coverage reporting, PR test results, artifact publishing)
 Database: PostgreSQL / SQL Server
 Containerization: Docker + docker-compose
-Other: AutoMapper / DTOs, FluentValidation (in progress)
+Other: AutoMapper / DTOs, FluentValidation 
 
 ## Screenshots
 
